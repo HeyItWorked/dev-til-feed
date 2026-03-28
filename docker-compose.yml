@@ -1,0 +1,14 @@
+services:
+  til-feed:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: til-feed
+    volumes:
+      - til-data:/app/data
+    ports:
+      - "3003:3001"
+    restart: unless-stopped
+
+volumes:
+  til-data:
