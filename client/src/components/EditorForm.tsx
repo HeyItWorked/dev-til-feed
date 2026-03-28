@@ -108,6 +108,7 @@ export default function EditorForm({ initial, onSubmit, submitLabel = 'Save' }: 
       <div className="editor-form__field">
         <label htmlFor="body">Body (Markdown)</label>
         <div className="editor-toolbar">
+          <span className="editor-toolbar__hint">Format:</span>
           {toolbarActions.map((action) => (
             <button
               key={action.label}
@@ -116,7 +117,8 @@ export default function EditorForm({ initial, onSubmit, submitLabel = 'Save' }: 
               title={action.label}
               onClick={() => handleToolbar(action)}
             >
-              {action.icon}
+              <span className="editor-toolbar__icon">{action.icon}</span>
+              <span className="editor-toolbar__label">{action.label}</span>
             </button>
           ))}
         </div>
