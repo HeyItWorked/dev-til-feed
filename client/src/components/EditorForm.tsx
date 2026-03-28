@@ -102,8 +102,11 @@ export default function EditorForm({ initial, onSubmit, submitLabel = 'Save' }: 
   return (
     <form className="editor-form" onSubmit={handleSubmit}>
       <div className="editor-form__field">
-        <label htmlFor="title">Title</label>
-        <input id="title" value={title} onChange={(e) => handleTitleChange(e.target.value)} required />
+        <div className="editor-form__label-row">
+          <label htmlFor="title">Title</label>
+          <span className={`editor-form__charcount ${title.length > 200 ? 'editor-form__charcount--over' : ''}`}>{title.length}/200</span>
+        </div>
+        <input id="title" value={title} onChange={(e) => handleTitleChange(e.target.value)} maxLength={200} required />
       </div>
       <div className="editor-form__field">
         <label htmlFor="body">Body (Markdown)</label>

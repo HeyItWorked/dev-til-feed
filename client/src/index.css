@@ -362,6 +362,37 @@ input:focus, textarea:focus {
   margin-bottom: 1rem;
 }
 
+/* Not Found */
+.not-found {
+  text-align: center;
+  padding: 4rem 1rem;
+}
+
+.not-found h2 {
+  margin-bottom: 0.5rem;
+}
+
+.not-found p {
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+/* Editor label row */
+.editor-form__label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.editor-form__charcount {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.editor-form__charcount--over {
+  color: var(--danger);
+}
+
 /* Markdown */
 .markdown {
   line-height: 1.8;
