@@ -2,6 +2,15 @@
 
 A personal "Today I Learned" logger for developers. Write, tag, search, and browse daily learnings with full Markdown support.
 
+### Feed — search, tag filter, paginated cards
+![Feed](docs/screenshots/feed.png)
+
+### Entry — full markdown rendering with code blocks
+![Entry](docs/screenshots/entry.png)
+
+### Editor — toolbar, live preview, character count
+![Editor](docs/screenshots/editor.png)
+
 ## Stack
 
 - **Backend:** Hono + SQLite (better-sqlite3) via Drizzle ORM
