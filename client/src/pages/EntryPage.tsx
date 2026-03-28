@@ -8,6 +8,7 @@ type Props = { id: string }
 export default function EntryPage({ id }: Props) {
   const [entry, setEntry] = useState<Entry | null>(null)
   const [error, setError] = useState('')
+  const [confirmDelete, setConfirmDelete] = useState(false)
 
   useEffect(() => {
     getEntry(id)
@@ -16,7 +17,6 @@ export default function EntryPage({ id }: Props) {
   }, [id])
 
   const handleDelete = async () => {
-    if (!confirm('Delete this entry?')) return
     await deleteEntry(id)
     window.location.hash = '/'
   }
@@ -41,7 +41,15 @@ export default function EntryPage({ id }: Props) {
       <div className="entry-page__body"><Markdown>{entry.body}</Markdown></div>
       <div className="entry-page__actions">
         <a href={`#/entry/${id}/edit`} className="btn-secondary" style={{ textDecoration: 'none' }}>Edit</a>
-        <button className="btn-danger" onClick={handleDelete}>Delete</button>
+        {confirmDelete ? (
+          <>
+            <span className="confirm-label">Delete this entry?</span>
+            <button className="btn-danger" onClick={handleDelete}>Yes</button>
+            <button className="btn-secondary" onClick={() => setConfirmDelete(false)}>No</button>
+          </>
+        ) : (
+          <button className="btn-danger" onClick={() => setConfirmDelete(true)}>Delete</button>
+        )}
       </div>
     </article>
   )
