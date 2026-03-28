@@ -44,12 +44,13 @@ a:hover {
   color: var(--accent-hover);
 }
 
-button {
+button, .btn-primary, .btn-secondary, .btn-danger {
   cursor: pointer;
   border: none;
   border-radius: 6px;
   padding: 0.5rem 1rem;
   font-size: 0.9rem;
+  display: inline-block;
   transition: background-color 0.2s;
 }
 
