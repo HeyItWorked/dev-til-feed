@@ -2,6 +2,12 @@
 
 A personal "Today I Learned" logger for developers. Write, tag, search, and browse daily learnings with full Markdown support.
 
+### Demo
+
+https://github.com/user-attachments/assets/demo.webm
+
+> [Download demo video](docs/demo.webm) — create, edit, tag filter, markdown preview, delete
+
 ### Feed — search, tag filter, paginated cards
 ![Feed](docs/screenshots/feed.png)
 
