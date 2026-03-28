@@ -1,0 +1,2 @@
+// Drizzle table definitions
+export {}

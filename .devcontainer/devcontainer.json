@@ -1,0 +1,6 @@
+{
+  "name": "Dev TIL Feed",
+  "build": { "dockerfile": "Dockerfile" },
+  "postCreateCommand": "npm install",
+  "forwardPorts": [3000, 5173]
+}

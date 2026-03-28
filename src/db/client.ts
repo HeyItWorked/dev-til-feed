@@ -1,0 +1,2 @@
+// DB singleton
+export {}
