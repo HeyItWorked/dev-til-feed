@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { getEntry, deleteEntry } from '../api/entries'
 import type { Entry } from '../api/types'
+import Markdown from '../components/Markdown'
 
 type Props = { id: string }
 
@@ -37,7 +38,7 @@ export default function EntryPage({ id }: Props) {
           <span key={tag} className="tag-pill">{tag}</span>
         ))}
       </div>
-      <div className="entry-page__body">{entry.body}</div>
+      <div className="entry-page__body"><Markdown>{entry.body}</Markdown></div>
       <div className="entry-page__actions">
         <a href={`#/entry/${id}/edit`} className="btn-secondary" style={{ textDecoration: 'none' }}>Edit</a>
         <button className="btn-danger" onClick={handleDelete}>Delete</button>

@@ -92,6 +92,10 @@ input:focus, textarea:focus {
   color: var(--text-secondary);
   font-size: 0.9rem;
   margin-bottom: 0.75rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .entry-card__footer {
@@ -251,8 +255,6 @@ input:focus, textarea:focus {
 }
 
 .entry-page__body {
-  line-height: 1.8;
-  white-space: pre-wrap;
   margin-bottom: 2rem;
 }
 
@@ -274,4 +276,97 @@ input:focus, textarea:focus {
 .error-text {
   color: var(--danger);
   margin-bottom: 1rem;
+}
+
+/* Markdown */
+.markdown {
+  line-height: 1.8;
+}
+
+.markdown h1, .markdown h2, .markdown h3, .markdown h4 {
+  margin: 1.5rem 0 0.75rem;
+  color: var(--text-primary);
+}
+
+.markdown h1 { font-size: 1.4rem; }
+.markdown h2 { font-size: 1.2rem; }
+.markdown h3 { font-size: 1.05rem; }
+
+.markdown p {
+  margin-bottom: 1rem;
+}
+
+.markdown ul, .markdown ol {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.markdown li {
+  margin-bottom: 0.25rem;
+}
+
+.markdown blockquote {
+  border-left: 3px solid var(--accent);
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: var(--text-secondary);
+}
+
+.markdown code {
+  background: var(--bg-secondary);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.85em;
+  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+}
+
+.markdown pre {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.markdown pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.markdown table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+.markdown th, .markdown td {
+  border: 1px solid var(--border);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+.markdown th {
+  background: var(--bg-secondary);
+}
+
+.markdown a {
+  color: var(--accent);
+}
+
+.markdown a:hover {
+  color: var(--accent-hover);
+}
+
+.markdown hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 1.5rem 0;
+}
+
+.markdown strong {
+  color: var(--text-primary);
 }
