@@ -4,9 +4,7 @@ A personal "Today I Learned" logger for developers. Write, tag, search, and brow
 
 ### Demo
 
-https://github.com/user-attachments/assets/demo.webm
-
-> [Download demo video](docs/demo.webm) — create, edit, tag filter, markdown preview, delete
+[demo.webm](https://github.com/HeyItWorked/dev-til-feed/raw/main/docs/demo.webm)
 
 ### Feed — search, tag filter, paginated cards
 ![Feed](docs/screenshots/feed.png)
