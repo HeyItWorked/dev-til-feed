@@ -95,4 +95,67 @@ describe('Entry routes', () => {
       expect(json.code).toBe('NOT_FOUND')
     })
   })
+
+  describe('PUT /api/entries/:id', () => {
+    it('should return 200 with updated entry', async () => {
+      const existing = { id: 'e1', title: 'Old', body: 'Old', tags: ['old'], createdAt: 1, updatedAt: 1 }
+      const updated = { id: 'e1', title: 'New', body: 'New body', tags: ['new'], createdAt: 1, updatedAt: 2 }
+      const newTags = [{ id: 't1', name: 'new', count: 1 }]
+
+      ;(entryRepo.findById as ReturnType<typeof import('vitest').vi.fn>).mockResolvedValue(existing)
+      ;(tagRepo.upsertMany as ReturnType<typeof import('vitest').vi.fn>).mockResolvedValue(newTags)
+      ;(entryRepo.update as ReturnType<typeof import('vitest').vi.fn>).mockResolvedValue(updated)
+
+      const res = await app.request('/api/entries/e1', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: 'New', body: 'New body', tags: ['new'] }),
+      })
+
+      expect(res.status).toBe(200)
+      const json = await res.json()
+      expect(json.data.title).toBe('New')
+    })
+
+    it('should return 400 on validation error', async () => {
+      const res = await app.request('/api/entries/e1', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: '', body: '' }),
+      })
+
+      expect(res.status).toBe(400)
+    })
+
+    it('should return 404 when not found', async () => {
+      ;(entryRepo.findById as ReturnType<typeof import('vitest').vi.fn>).mockResolvedValue(null)
+
+      const res = await app.request('/api/entries/missing', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: 'X', body: 'X', tags: [] }),
+      })
+
+      expect(res.status).toBe(404)
+    })
+  })
+
+  describe('DELETE /api/entries/:id', () => {
+    it('should return 204 on success', async () => {
+      const existing = { id: 'e1', title: 'T', body: 'B', tags: [], createdAt: 1, updatedAt: 1 }
+      ;(entryRepo.findById as ReturnType<typeof import('vitest').vi.fn>).mockResolvedValue(existing)
+
+      const res = await app.request('/api/entries/e1', { method: 'DELETE' })
+
+      expect(res.status).toBe(204)
+    })
+
+    it('should return 404 when not found', async () => {
+      ;(entryRepo.findById as ReturnType<typeof import('vitest').vi.fn>).mockResolvedValue(null)
+
+      const res = await app.request('/api/entries/missing', { method: 'DELETE' })
+
+      expect(res.status).toBe(404)
+    })
+  })
 })

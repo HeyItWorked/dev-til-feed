@@ -1,5 +1,5 @@
 import { Hono } from 'hono'
-import { createEntrySchema, listEntriesQuerySchema } from '../validators/entry.validator.js'
+import { createEntrySchema, updateEntrySchema, listEntriesQuerySchema } from '../validators/entry.validator.js'
 import { ValidationError } from '../errors.js'
 import type { EntryService } from '../services/entry.service.js'
 
@@ -38,6 +38,21 @@ export function createEntryRoutes(entryService: EntryService) {
   app.get('/:id', async (c) => {
     const entry = await entryService.getById(c.req.param('id'))
     return c.json({ data: entry })
+  })
+
+  app.put('/:id', async (c) => {
+    const body = await c.req.json()
+    const parsed = updateEntrySchema.safeParse(body)
+    if (!parsed.success) {
+      throw new ValidationError(parsed.error.issues[0].message)
+    }
+    const entry = await entryService.update(c.req.param('id'), parsed.data)
+    return c.json({ data: entry })
+  })
+
+  app.delete('/:id', async (c) => {
+    await entryService.delete(c.req.param('id'))
+    return c.body(null, 204)
   })
 
   return app
