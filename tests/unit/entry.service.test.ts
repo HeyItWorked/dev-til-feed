@@ -126,4 +126,51 @@ describe('EntryService', () => {
       expect(entryRepo.findMany).toHaveBeenCalledWith({ tag: 'typescript', page: 1, pageSize: 10 })
     })
   })
+
+  describe('update', () => {
+    it('should update an entry', async () => {
+      const existing = { id: 'e1', title: 'Old', body: 'Old', tags: ['old'], createdAt: 1, updatedAt: 1 }
+      const input = { title: 'New', body: 'New body', tags: ['new-tag'] }
+      const newTags = [{ id: 'tag-new', name: 'new-tag', count: 1 }]
+      const updated = { ...existing, ...input, updatedAt: 2 }
+
+      ;(entryRepo.findById as ReturnType<typeof import('vitest').vi.fn>).mockResolvedValue(existing)
+      ;(tagRepo.upsertMany as ReturnType<typeof import('vitest').vi.fn>).mockResolvedValue(newTags)
+      ;(entryRepo.update as ReturnType<typeof import('vitest').vi.fn>).mockResolvedValue(updated)
+
+      const result = await service.update('e1', input)
+
+      expect(entryRepo.findById).toHaveBeenCalledWith('e1')
+      expect(tagRepo.upsertMany).toHaveBeenCalledWith(['new-tag'])
+      expect(entryRepo.update).toHaveBeenCalledWith('e1', input)
+      expect(tagRepo.syncEntryTags).toHaveBeenCalledWith('e1', ['tag-new'])
+      expect(tagRepo.pruneOrphans).toHaveBeenCalled()
+      expect(result).toEqual(updated)
+    })
+
+    it('should throw NotFoundError when updating missing entry', async () => {
+      ;(entryRepo.findById as ReturnType<typeof import('vitest').vi.fn>).mockResolvedValue(null)
+
+      await expect(service.update('missing', { title: 'X', body: 'X', tags: [] })).rejects.toThrow(NotFoundError)
+    })
+  })
+
+  describe('delete', () => {
+    it('should delete an entry and prune orphans', async () => {
+      const existing = { id: 'e1', title: 'T', body: 'B', tags: [], createdAt: 1, updatedAt: 1 }
+      ;(entryRepo.findById as ReturnType<typeof import('vitest').vi.fn>).mockResolvedValue(existing)
+
+      await service.delete('e1')
+
+      expect(entryRepo.findById).toHaveBeenCalledWith('e1')
+      expect(entryRepo.delete).toHaveBeenCalledWith('e1')
+      expect(tagRepo.pruneOrphans).toHaveBeenCalled()
+    })
+
+    it('should throw NotFoundError when deleting missing entry', async () => {
+      ;(entryRepo.findById as ReturnType<typeof import('vitest').vi.fn>).mockResolvedValue(null)
+
+      await expect(service.delete('missing')).rejects.toThrow(NotFoundError)
+    })
+  })
 })
