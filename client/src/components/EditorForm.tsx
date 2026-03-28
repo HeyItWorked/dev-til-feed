@@ -1,10 +1,11 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import type { CreateEntryInput } from '../api/types'
 import Markdown from './Markdown'
 
 type Props = {
   initial?: CreateEntryInput
   onSubmit: (data: CreateEntryInput) => void
+  onDirtyChange?: (dirty: boolean) => void
   submitLabel?: string
 }
 
@@ -25,11 +26,30 @@ const toolbarActions: ToolbarAction[] = [
   { label: 'Link', icon: '🔗', before: '[', after: '](url)' },
 ]
 
-export default function EditorForm({ initial, onSubmit, submitLabel = 'Save' }: Props) {
+export default function EditorForm({ initial, onSubmit, onDirtyChange, submitLabel = 'Save' }: Props) {
   const [title, setTitle] = useState(initial?.title ?? '')
   const [body, setBody] = useState(initial?.body ?? '')
   const [tagsInput, setTagsInput] = useState(initial?.tags.join(', ') ?? '')
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+  const isDirty = useCallback(() => {
+    const initTitle = initial?.title ?? ''
+    const initBody = initial?.body ?? ''
+    const initTags = initial?.tags.join(', ') ?? ''
+    return title !== initTitle || body !== initBody || tagsInput !== initTags
+  }, [title, body, tagsInput, initial])
+
+  useEffect(() => {
+    onDirtyChange?.(isDirty())
+  }, [isDirty, onDirtyChange])
+
+  useEffect(() => {
+    const handler = (e: BeforeUnloadEvent) => {
+      if (isDirty()) e.preventDefault()
+    }
+    window.addEventListener('beforeunload', handler)
+    return () => window.removeEventListener('beforeunload', handler)
+  }, [isDirty])
 
   const handleTitleChange = (value: string) => {
     setTitle(autoCapitalize(value))
