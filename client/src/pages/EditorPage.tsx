@@ -11,6 +11,7 @@ export default function EditorPage({ id }: Props) {
   const [error, setError] = useState('')
 
   useEffect(() => {
+    document.title = id ? 'Edit TIL — Dev TIL' : 'New TIL — Dev TIL'
     if (!id) return
     getEntry(id)
       .then((res: { data: Entry }) => {

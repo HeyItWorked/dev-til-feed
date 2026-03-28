@@ -12,10 +12,14 @@ export default function FeedPage() {
   const [meta, setMeta] = useState<PaginatedMeta>({ total: 0, page: 1, pageSize: 10 })
   const [tags, setTags] = useState<Tag[]>([])
   const [search, setSearch] = useState('')
-  const [activeTag, setActiveTag] = useState<string | undefined>()
+  const [activeTag, setActiveTag] = useState<string | undefined>(() => {
+    const match = window.location.hash.match(/[?&]tag=([^&]+)/)
+    return match ? decodeURIComponent(match[1]) : undefined
+  })
   const [page, setPage] = useState(1)
 
   useEffect(() => {
+    document.title = 'Dev TIL Feed'
     listTags().then((res) => setTags(res.data)).catch(console.error)
   }, [])
 
@@ -44,7 +48,9 @@ export default function FeedPage() {
         <TagCloud tags={tags} activeTag={activeTag} onTagClick={handleTagClick} />
       )}
       {entries.length === 0 ? (
-        <p className="empty-state">No entries yet. Write your first TIL!</p>
+        <p className="empty-state">
+          {search || activeTag ? 'No results found.' : 'No entries yet. Write your first TIL!'}
+        </p>
       ) : (
         entries.map((entry) => (
           <EntryCard
